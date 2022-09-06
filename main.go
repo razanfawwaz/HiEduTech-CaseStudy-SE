@@ -34,7 +34,7 @@ func dumpDb() {
 	cmd := exec.Command("sqlite3", dbpath, ".dump")
 	data, err := cmd.Output()
 
-	f, err := os.Create("data2.sql")
+	f, err := os.Create("data.sql")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -68,7 +68,7 @@ func importData() {
 	timeStart := time.Now()
 
 	db, err := connect()
-	query, _ := os.ReadFile("./data2.sql")
+	query, _ := os.ReadFile("./data.sql")
 	_, err = db.Query(string(query))
 	if err != nil {
 		fmt.Println(err)

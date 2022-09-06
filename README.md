@@ -18,4 +18,11 @@ This project owned by `Muhammad Razan Fawwaz` Undergraduate informatics student 
 3. Run `go run main.go` on your terminal
 4. Program will return `success` if the data is successfully exported and imported to Postgres database.
 
+## How Program Works
+1. Program will convert the data from `Northwind_small.sqlite` to `data.sql`.
+2. After successfully converted. Program will import the data to Postgres database using the `data.sql` file.
+3. If the data is successfully imported, the program will return `success`.
+4. Program will print out the `amount of data` in each table.
+5. Program also will print out the `amount of time` that used to export, import, and count the data.
+6. Program exit
 
