@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"time"
 )
 
 func connect() (*sql.DB, error) {
@@ -27,7 +28,7 @@ func connect() (*sql.DB, error) {
 }
 
 func dumpDb() {
-
+	timeStart := time.Now()
 	//app := "sqlite3 /Northwind_small.sqlite .dump > db.sql"
 	dbpath := "./Northwind_small.sqlite"
 	cmd := exec.Command("sqlite3", dbpath, ".dump")
@@ -52,28 +53,54 @@ func dumpDb() {
 	if err != nil {
 		log.Fatal(err)
 	} else {
-		fmt.Println("Success Dump Data")
+		fmt.Println("Export data success!")
 	}
 
 	if err != nil {
 		fmt.Println(err.Error())
 		return
 	}
-
+	timeElapsed := time.Since(timeStart)
+	fmt.Printf("Total time for export data: %s\n", timeElapsed)
 }
 
 func importData() {
+	timeStart := time.Now()
+
 	db, err := connect()
 	query, _ := os.ReadFile("./data2.sql")
 	_, err = db.Query(string(query))
 	if err != nil {
 		fmt.Println(err)
 	} else {
-		fmt.Println("Success Input Data")
+		fmt.Println("\nInput Data Success!")
 	}
+	timeElapsed := time.Since(timeStart)
+	fmt.Printf("Total time for input data: %s\n\n", timeElapsed)
+}
+
+func countData() {
+	timeStart := time.Now()
+	var count int
+	var tables []string = []string{"Category", "Customer", "CustomerCustomerDemo", "CustomerDemographic", "Employee", "EmployeeTerritory", "Order", "OrderDetail", "Product", "Region", "Shipper", "Supplier", "Territory"}
+	db, err := connect()
+	for i := 0; i < len(tables); i++ {
+		db.QueryRow("SELECT COUNT(*) FROM " + tables[i]).Scan(&count)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println("Total data from table", tables[i], ":", count)
+	}
+	timeElapsed := time.Since(timeStart)
+	fmt.Printf("Total time for data count: %s\n", timeElapsed)
+
 }
 
 func main() {
+	timeStart := time.Now()
 	dumpDb()
 	importData()
+	countData()
+	timeElapsed := time.Since(timeStart)
+	fmt.Printf("\nTotal time elapsed: %s", timeElapsed)
 }
