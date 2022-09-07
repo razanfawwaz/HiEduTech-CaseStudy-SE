@@ -12,6 +12,9 @@ This project owned by `Muhammad Razan Fawwaz` Undergraduate informatics student 
 - Docker 
 - Sqlite3 
 
+Username for Postgres: `user`
+Password for Postgres: `postgres`
+
 ## How To Use
 1. Clone this repository
 2. Install Postgres using Docker
